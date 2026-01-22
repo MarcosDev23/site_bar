@@ -1,0 +1,25 @@
+# Ambiente Virtual
+venv/
+ENV/
+env/
+.env
+
+# Python (Arquivos temporários de compilação)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Banco de Dados Local (Geralmente não enviamos o .db para o Git)
+# Se você quiser que o recrutador veja o banco já populado, remova a linha abaixo.
+# Caso contrário, mantenha-a para que cada um crie seu próprio banco.
+*.db
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store
+.directory
+
+# Uploads de usuários (Opcional)
+# Se você não quiser que suas fotos de teste poluam o GitHub:
+static/uploads/*
+!static/uploads/.gitkeep

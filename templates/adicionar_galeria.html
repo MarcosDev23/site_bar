@@ -1,0 +1,12 @@
+<body class="section">
+  <div class="card">
+    <h2>Adicionar à Galeria</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" accept="image/*,video/*" required />
+      <div style="margin-top: 15px">
+        <button type="submit">Fazer Upload</button>
+        <a href="{{ url_for('index') }}" class="btn-edit">Voltar</a>
+      </div>
+    </form>
+  </div>
+</body>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syntax Bar | Home</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body class="dark-mode">
+    <nav id="navbar">
+      <div class="logo">SYNTAX BAR</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#agenda">Agenda</a></li>
+        <li><a href="#cardapio">Cardápio</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#contato">Reservas</a></li>
+      </ul>
+      <div class="menu-toggle">⋮</div>
+    </nav>
+
+    <section id="home" class="section">
+      <h1>Bem-vindo ao nosso Bar</h1>
+      <p>Onde a sintaxe encontra o sabor.</p>
+    </section>
+
+    <section id="agenda" class="section">
+      <h2>Próximos Eventos</h2>
+      <div class="grid-container">
+        {% for show in shows %}
+        <div class="card">
+          {% if show.imagem %}
+          <img
+            src="{{ url_for('static', filename='uploads/' + show.imagem) }}"
+            alt="{{ show.artista }}"
+            class="band-img"
+          />
+          {% endif %}
+
+          <div class="card-content">
+            <h3>{{ show.artista }}</h3>
+            <p><strong>Data:</strong> {{ show.data }}</p>
+            <p><strong>Horário:</strong> {{ show.horario }}</p>
+          </div>
+
+          {% if current_user.is_authenticated %}
+          <div class="admin-controls">
+            <button onclick="excluirShow({{ show.id }})" class="btn-delete">
+              🗑️
+            </button>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="cardapio" class="section">
+      <h2>Nosso Cardápio</h2>
+
+      {% if current_user.is_authenticated %}
+      <div style="margin-bottom: 20px">
+        <a
+          href="{{ url_for('adicionar_produto') }}"
+          class="btn-edit"
+          style="text-decoration: none; padding: 10px 20px"
+        >
+          + Adicionar Novo Item
+        </a>
+      </div>
+      {% endif %}
+
+      <div class="grid-container">
+        {% for produto in produtos %}
+        <div class="card">
+          {% if produto.imagem %}
+          <img
+            src="{{ url_for('static', filename='uploads/' + produto.imagem) }}"
+            alt="{{ produto.nome }}"
+            class="card-img"
+          />
+          {% endif %}
+
+          <div class="card-content">
+            <h3>{{ produto.nome }}</h3>
+            <p class="price">R$ {{ "%.2f"|format(produto.preco) }}</p>
+            <small>{{ produto.categoria }}</small>
+            <p>{{ produto.descricao }}</p>
+          </div>
+
+          {% if current_user.is_authenticated %}
+          <div class="admin-controls">
+            <button onclick="editarProduto({{ produto.id }})" class="btn-edit">
+              ✏️
+            </button>
+            <button
+              onclick="excluirProduto({{ produto.id }})"
+              class="btn-delete"
+            >
+              🗑️
+            </button>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="contato" class="section">
+      <h2>Faça sua Reserva</h2>
+      <form id="reservaForm" class="card">
+        <input type="text" id="nome" placeholder="Seu Nome" required />
+        <input type="tel" id="telefone" placeholder="Seu Telefone" required />
+        <input type="date" id="data_reserva" required />
+        <select id="motivo">
+          <option value="">Motivo da visita</option>
+          <option value="Reserva comum">Reserva comum</option>
+          <option value="Aniversário">Aniversário</option>
+          <option value="Confraternização">Confraternização</option>
+          <option value="Happy Hour">Happy Hour</option>
+        </select>
+        <button type="submit">Enviar pelo WhatsApp</button>
+      </form>
+    </section>
+
+    <a
+      href="https://wa.me/5511961699799"
+      class="whatsapp-float"
+      target="_blank"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+        alt="WhatsApp"
+      />
+    </a>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
